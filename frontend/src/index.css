@@ -1,0 +1,130 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* 全局样式 */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 极客主题样式 */
+.dark body {
+  background-color: #0a0a0a;
+  color: #ffffff;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-400 dark:bg-gray-600 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-500 dark:bg-gray-500;
+}
+
+/* 极客风格特殊效果 */
+.dark .geek-glow {
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+}
+
+.dark .geek-text-glow {
+  text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+}
+
+/* 输入框聚焦效果 */
+.dark input:focus,
+.dark textarea:focus {
+  box-shadow: 0 0 0 2px rgba(0, 255, 0, 0.5);
+  border-color: #00ff00;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5);
+  border-color: #007bff;
+}
+
+/* 动画优化 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* 选择文本样式 */
+::selection {
+  background-color: rgba(0, 123, 255, 0.3);
+  color: inherit;
+}
+
+.dark ::selection {
+  background-color: rgba(0, 255, 0, 0.3);
+  color: inherit;
+}
+
+/* 表格单元格悬停效果 */
+.calendar-cell:hover {
+  transform: scale(1.02);
+  transition: transform 0.2s ease;
+}
+
+/* 加载动画 */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* 渐入动画 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.4s ease-out;
+}
+
+/* 极客模式终端光标闪烁 */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.blink {
+  animation: blink 1s infinite;
+}
