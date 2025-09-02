@@ -1,14 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useCalendarStore } from './stores/calendarStore';
 import CalendarGrid from './components/CalendarGrid';
 import ThemeToggle from './components/ThemeToggle';
 import ViewModeSelector from './components/ViewModeSelector';
 import DateNavigator from './components/DateNavigator';
 import StatsPanel from './components/StatsPanel';
+import StatsView from './components/StatsView';
+import TaskManager from './components/TaskManager';
+import { ListTodo } from 'lucide-react';
 import './index.css';
 
 const App: React.FC = () => {
   const { currentView, theme, selectedDate, error, loading } = useCalendarStore();
+  const [showTaskManager, setShowTaskManager] = useState(false);
 
   useEffect(() => {
     // 根据主题模式设置根元素的类名
@@ -50,8 +54,28 @@ const App: React.FC = () => {
               <DateNavigator />
             </div>
 
-            {/* 右侧：视图切换 + 主题切换 */}
+            {/* 右侧：任务管理 + 视图切换 + 主题切换 */}
             <div className="flex items-center gap-4">
+              <button
+                onClick={() => setShowTaskManager(!showTaskManager)}
+                className={`
+                  px-3 py-2 rounded-lg flex items-center gap-2 transition-all
+                  ${showTaskManager 
+                    ? (theme.mode === 'geek' 
+                      ? 'bg-geek-primary/30 text-geek-primary border border-geek-primary/50' 
+                      : 'bg-blue-100 text-blue-700 border border-blue-300')
+                    : (theme.mode === 'geek' 
+                      ? 'bg-geek-surface text-geek-text hover:bg-geek-primary/10 border border-geek-primary/20' 
+                      : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300')
+                  }
+                `}
+                title="任务管理"
+              >
+                <ListTodo size={20} />
+                <span className={`text-sm ${theme.mode === 'geek' ? 'font-mono' : ''}`}>
+                  任务
+                </span>
+              </button>
               <ViewModeSelector />
               <ThemeToggle />
             </div>
@@ -79,6 +103,17 @@ const App: React.FC = () => {
           </div>
         )}
 
+        {/* 任务管理面板 */}
+        {showTaskManager && (
+          <div className={`mb-4 rounded-lg border overflow-hidden ${
+            theme.mode === 'geek' 
+              ? 'bg-geek-surface/30 border-geek-primary/20' 
+              : 'bg-white border-gray-300 shadow-sm'
+          }`}>
+            <TaskManager />
+          </div>
+        )}
+
         <div className="flex gap-4 h-[calc(100vh-140px)] min-h-0">
           {/* 日程表格区域 */}
           <div className="flex-1 min-w-0 overflow-hidden">
@@ -100,10 +135,18 @@ const App: React.FC = () => {
                   }`}></div>
                 </div>
               )}
-              <CalendarGrid 
-                viewMode={currentView.type === 'year' ? 'month' : currentView.type}
-                startDate={selectedDate}
-              />
+              {/* 根据视图模式显示不同内容 */}
+              {(currentView.type === 'month' || currentView.type === 'year') ? (
+                <StatsView 
+                  viewMode={currentView.type}
+                  date={selectedDate}
+                />
+              ) : (
+                <CalendarGrid 
+                  viewMode={currentView.type}
+                  startDate={selectedDate}
+                />
+              )}
             </div>
           </div>
 
