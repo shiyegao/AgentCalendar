@@ -16,24 +16,29 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({ viewMode, startDate }) => {
     fetchEvents,
     updateEvent,
     createEvent,
-    getEventsForDate
+    getEventsForDate,
+    selectedDate
   } = useCalendarStore();
 
   const [editingCell, setEditingCell] = useState<{ date: Date; timeSlot: string } | null>(null);
   const [editValue, setEditValue] = useState('');
 
   useEffect(() => {
-    const endDate = viewMode === 'week' ? addDays(startOfWeek(startDate, { weekStartsOn: 1 }), 6) : startDate;
-    fetchEvents(startDate, endDate);
-  }, [startDate, viewMode, fetchEvents]);
+    // 使用 selectedDate 确保一致性
+    const baseDate = selectedDate;
+    const endDate = viewMode === 'week' ? addDays(startOfWeek(baseDate, { weekStartsOn: 1 }), 6) : baseDate;
+    fetchEvents(baseDate, endDate);
+  }, [selectedDate, viewMode, fetchEvents]);
 
   const getDays = () => {
-    if (viewMode === 'day') return [startDate];
+    // 使用 selectedDate 确保一致性
+    const baseDate = selectedDate;
+    if (viewMode === 'day') return [baseDate];
     if (viewMode === 'week') {
-      const weekStart = startOfWeek(startDate, { weekStartsOn: 1 });
+      const weekStart = startOfWeek(baseDate, { weekStartsOn: 1 });
       return Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
     }
-    return [startDate];
+    return [baseDate];
   };
 
   const handleCellClick = (date: Date, timeSlot: string) => {
@@ -64,6 +69,8 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({ viewMode, startDate }) => {
       }
     } catch (error) {
       console.error('保存失败:', error);
+      // 如果保存失败，不要关闭编辑状态，让用户重试
+      return;
     }
 
     setEditingCell(null);

@@ -3,7 +3,7 @@ import { Calendar, Clock, CalendarDays, CalendarRange } from 'lucide-react';
 import { useCalendarStore } from '../stores/calendarStore';
 
 const ViewModeSelector: React.FC = () => {
-  const { currentView, setView, theme } = useCalendarStore();
+  const { currentView, setView, theme, selectedDate, setSelectedDate } = useCalendarStore();
 
   const viewModes = [
     { type: 'day' as const, icon: Clock, label: '日' },
@@ -13,7 +13,10 @@ const ViewModeSelector: React.FC = () => {
   ];
 
   const handleViewChange = (type: 'day' | 'week' | 'month' | 'year') => {
-    setView({ type, date: currentView.date });
+    // 确保 currentView 和 selectedDate 保持一致
+    const newDate = selectedDate;
+    setView({ type, date: newDate });
+    setSelectedDate(newDate);
   };
 
   return (

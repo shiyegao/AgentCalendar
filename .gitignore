@@ -120,3 +120,10 @@ screenshot_*.png
 # Temporary Python development files
 *.pyc.bak
 *.py.bak
+
+# Playwright and test files
+test-results/
+playwright-report/
+*test*.js
+*debug*.js
+final-validation.js

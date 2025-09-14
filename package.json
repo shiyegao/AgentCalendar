@@ -1,0 +1,15 @@
+{
+  "name": "agentcalendar",
+  "version": "1.0.0",
+  "description": "## 项目概述 基于Excel模板设计理念的高信息密度日程管理应用，支持自定义页面、数据串联统计和多尺度可视化。",
+  "main": "playwright.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "playwright": "^1.55.0"
+  }
+}

@@ -69,13 +69,14 @@ export const useCalendarStore = create<CalendarStore>((set, get) => ({
     try {
       const response = await axios.post(`${API_BASE}/events`, event);
       const { events } = get();
-      set({ 
+      set({
         events: [...events, response.data],
-        loading: false 
+        loading: false
       });
     } catch (error) {
       set({ error: '创建事件失败', loading: false });
       console.error('Failed to create event:', error);
+      throw error; // 抛出错误以便组件可以处理
     }
   },
   
@@ -91,6 +92,7 @@ export const useCalendarStore = create<CalendarStore>((set, get) => ({
     } catch (error) {
       set({ error: '更新事件失败', loading: false });
       console.error('Failed to update event:', error);
+      throw error; // 抛出错误以便组件可以处理
     }
   },
   

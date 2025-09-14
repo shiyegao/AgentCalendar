@@ -35,6 +35,33 @@ class CalendarEventCreate(BaseModel):
     notes: Optional[str] = None
 
 
+class CalendarEventUpdate(BaseModel):
+    title: Optional[str] = None
+    category: Optional[str] = None
+    morning_7_8: Optional[str] = None
+    morning_8_9: Optional[str] = None
+    morning_9_10: Optional[str] = None
+    morning_10_11: Optional[str] = None
+    morning_11_12: Optional[str] = None
+    afternoon_12_13: Optional[str] = None
+    afternoon_13_14: Optional[str] = None
+    afternoon_14_15: Optional[str] = None
+    afternoon_15_16: Optional[str] = None
+    afternoon_16_17: Optional[str] = None
+    afternoon_17_18: Optional[str] = None
+    evening_18_19: Optional[str] = None
+    evening_19_20: Optional[str] = None
+    evening_20_21: Optional[str] = None
+    evening_21_22: Optional[str] = None
+    evening_22_23: Optional[str] = None
+    evening_23_24: Optional[str] = None
+    morning_completed: Optional[bool] = None
+    afternoon_completed: Optional[bool] = None
+    evening_completed: Optional[bool] = None
+    productivity_score: Optional[float] = None
+    notes: Optional[str] = None
+
+
 class CalendarEventResponse(BaseModel):
     id: int
     date: datetime
@@ -76,12 +103,16 @@ def get_events(
     category: Optional[str] = None,
     db: Session = Depends(get_db),
 ):
+    from sqlalchemy import func
+
     query = db.query(CalendarEvent)
 
     if start_date:
-        query = query.filter(CalendarEvent.date >= start_date)
+        # 使用 DATE() 函数只比较日期部分，忽略时间
+        query = query.filter(func.date(CalendarEvent.date) >= start_date)
     if end_date:
-        query = query.filter(CalendarEvent.date <= end_date)
+        # 使用 DATE() 函数只比较日期部分，忽略时间
+        query = query.filter(func.date(CalendarEvent.date) <= end_date)
     if category:
         query = query.filter(CalendarEvent.category == category)
 
@@ -108,14 +139,16 @@ def get_event(event_id: int, db: Session = Depends(get_db)):
 
 @router.put("/events/{event_id}", response_model=CalendarEventResponse)
 def update_event(
-    event_id: int, event: CalendarEventCreate, db: Session = Depends(get_db)
+    event_id: int, event: CalendarEventUpdate, db: Session = Depends(get_db)
 ):
     db_event = db.query(CalendarEvent).filter(CalendarEvent.id == event_id).first()
     if db_event is None:
         raise HTTPException(status_code=404, detail="Event not found")
 
-    for field, value in event.dict().items():
-        setattr(db_event, field, value)
+    # 只更新非None的字段
+    for field, value in event.dict(exclude_unset=True).items():
+        if value is not None:
+            setattr(db_event, field, value)
 
     db_event.updated_at = datetime.utcnow()
     db.commit()
