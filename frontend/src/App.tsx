@@ -118,10 +118,10 @@ const App: React.FC = () => {
           {/* 日程表格区域 */}
           <div className="flex-1 min-w-0 overflow-hidden">
             <div className={`
-              rounded-lg border h-full overflow-hidden relative
-              ${theme.mode === 'geek' 
-                ? 'bg-geek-surface/30 border-geek-primary/20' 
-                : 'bg-white border-gray-300'
+              rounded-lg border-2 h-full overflow-hidden relative shadow-xl
+              ${theme.mode === 'geek'
+                ? 'bg-gradient-to-br from-geek-surface/40 via-geek-surface/30 to-geek-bg/90 border-geek-primary/30'
+                : 'bg-gradient-to-br from-white via-gray-50/50 to-gray-100/30 border-gray-400'
               }
             `}>
               {loading && (
@@ -153,10 +153,10 @@ const App: React.FC = () => {
           {/* 统计面板区域 */}
           <div className="w-72 flex-shrink-0">
             <div className={`
-              rounded-lg border p-3 h-full overflow-auto
-              ${theme.mode === 'geek' 
-                ? 'bg-geek-surface/30 border-geek-primary/20' 
-                : 'bg-white border-gray-300'
+              rounded-lg border-2 p-3 h-full overflow-auto shadow-lg
+              ${theme.mode === 'geek'
+                ? 'bg-gradient-to-br from-geek-surface/40 via-geek-surface/30 to-geek-bg/90 border-geek-primary/30'
+                : 'bg-gradient-to-br from-white via-gray-50/50 to-gray-100/30 border-gray-400'
               }
             `}>
               <StatsPanel />

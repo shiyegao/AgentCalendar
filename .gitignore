@@ -105,3 +105,18 @@ frontend/.env.production.local
 frontend/npm-debug.log*
 frontend/yarn-debug.log*
 frontend/yarn-error.log*
+
+# Screenshots and images (temporary)
+*.png
+agentcalendar_*.png
+screenshot_*.png
+
+# UV lock file (can be included in version control)
+# uv.lock
+
+# Python tools
+.ruff_cache/
+
+# Temporary Python development files
+*.pyc.bak
+*.py.bak

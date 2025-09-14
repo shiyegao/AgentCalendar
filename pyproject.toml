@@ -1,0 +1,13 @@
+[project]
+name = "agentcalendar-tools"
+version = "0.1.0"
+description = "Tools for AgentCalendar development"
+requires-python = ">=3.8"
+
+dependencies = [
+    "playwright>=1.40.0"
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

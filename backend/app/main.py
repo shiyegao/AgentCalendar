@@ -21,6 +21,7 @@ app.add_middleware(
 # 包含路由
 app.include_router(calendar.router, prefix="/api/v1", tags=["calendar"])
 
+
 @app.get("/")
 def read_root():
     return {"message": "AgentCalendar API is running!"}
